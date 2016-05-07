@@ -105,13 +105,7 @@
 
     <abstract>
 <t>
-	This document delineates principal and ancillary use cases for DDoS 
-	Open Threat Signaling (DOTS), a communications protocol intended to 
-	facilitate the programmatic, coordinated mitigation of Distributed 
-	Denial of Service (DDoS) attacks via a standards-based mechanism. 
-	DOTS is purposely designed to support requests for DDoS mitigation 
-	services and status updates across inter-organizational 
-	administrative boundaries.
+	The DDoS Open Threat Signaling (DOTS) effort is intended to provide a protocol that facilitates interoperability between multivendor solutions/services. This document presents use cases to evaluate the interactions expected between the DOTS components as well as the DOTS exchanges. The purpose of the use cases is to identify the interacting DOTS component, how they collaborate and what are the type of informations to be exchanged.
 </t>
     </abstract>
 
@@ -133,16 +127,9 @@
    mitigation efficacy.
 </t>
 <t>
-   The DDoS Open Threat Signaling (DOTS) effort is intended to 
-   facilitate interoperability between DDoS solutions/services by 
-   providing a standards-based, programmatic communications mechanism 
-   for the invitation and termination of heterogeneous DDoS attack 
-   mitigation systems and services.  This allows for a much higher 
-   degree of automation and concomitant efficacy and rapidity of DDoS 
-   attack mitigation involving multiple DDoS mitigation systems and 
-   services than is currently the norm, as well as providing additional 
-   benefits such as automatic DDoS mitigation service registration and 
-   provisioning.  It should be noted that DOTS is not in and of itself 
+   The DDoS Open Threat Signaling (DOTS) effort is intended to provide a protocol that facilitates interoperability between multivendor solutions/services. As DDoS solutions/services are broadly heterogeneous among different vendor, the primary goal for DOTS is to provide a high level interaction with these DDoS solutions/services such as initiating or terminating the the service/solution. In addition, DOTS is limited to DDoS and may be used by a node under attack.
+More specifically, DOTS does not intend to become a generic purpose used to orchestrate different DDoS mitigation services/solutions and the use of DOTS by node under a DDoS attack is expected to impact the design of the DOTS protocol. As a result, although DOTS may be used in the future for further signaling, the current document limits DOTS to a DDoS signaling protocol.
+  It should be noted that DOTS is not in and of itself 
    intended to perform orchestration functions duplicative of the 
    functionality being developed by the [I2NSF] WG; rather, DOTS is 
    intended to allow devices, services, and applications to request 
@@ -150,17 +137,7 @@
    systems of this nature.
 </t>
 <t>
-   This document provides an overview of common DDoS mitigation system/ 
-   service deployment and operational models which are in use today, 
-   but which are currently limited in scope to a single vendor or 
-   service provider and are often highly manual in nature, which can 
-   lead to miscommunications, misconfigurations, and delays in bringing 
-   mitigation services to bear against an attack.  The introduction of 
-   DOTS into these scenarios will reduce reaction times and the risks 
-   associated with manual processes, simplify the use of multiple types 
-   of DDoS mitigation systems and services as required, and make 
-   practical the simultaneous use multiple DDoS mitigation systems and 
-   services as circumstances warrant.
+   This document provides use cases where DDoS mitigation is handled using DOTS. The use case presented in the document are intended to clarify what interactions are envisioned with DOTS, as well as the nodes interacting using DOTS. In both cases, the use cases are expected to provide inputs for the design of DOTS. 
 </t>
 </section>
 
@@ -182,6 +159,155 @@
 	</section> 
 </section>
 
+<section title="Use Cases Taxonomy">
+
+<t>The purpose of DDoS Open Threat Signaling DOTS is to enable the coordination of multiple vendor DDoS mitigation services/systems. DOTS communication is a communication between a DOTS Client and a DOTS Server.
+A DOTS Client or DOTS Server can be hosted on different nodes which are associated to different functionalities, and thus leading to different expectations from DOTS. This section provides a classification of the DOTS Client, the DOTS Servers as well as the different type of exchanges.</t>
+
+<t>The high level classification is then illustrated on concrete nodes and examples. Appendix also illustrate the current classification with scenario and complete description of the process.</t>
+
+<t>[MGLT: I voluntary talk about nodes to avoid the terminology components. In my opinion we should remove from the terminology the DOTS relay, DOTS agent. For clarity I think we should only have DOTS Client and DOTS Server.]</t>
+
+<section title="DOTS Client Taxonomy">
+
+<t>DOTS Client initiates a DOTS communication in order to alert an DDoS attack is ongoing or to coordinate a DDoS mitigation. Coordination of a DDOS Mitigation with DOTS includes initiating/terminations of an DDoS mitigation service/system as well as controlling the status of an ongoing DDoS mitigation.</t>
+
+<t>Note that the section only considers DOTS Client that are actually initiating an exchange with a DOTS Server, and nodes that simply relay DOTS messages are not considered here.</t>
+
+<t>Here are the categories of DOTS Client envisioned in this document:
+<list style="format (%c)">
+    <t>DOTS Client alerting a DDoS attack is ongoing
+    <list style="format %i) ">
+        <t>hosted on the target attack</t>
+        <t>hosted on a monitoring service/system</t>
+    </list>
+    </t>
+    <t>DOTS Client coordinating an DDoS attack mitigation
+    <list style="format %i) "> 
+       <t>hosted on an orchestrator</t>
+        <t>hosted on administrative GUI</t>
+    </list>
+    </t>
+</list>
+</t>
+
+<t>When the DOTS Client is hosted on the attack target. The DOTS Client mostly raised an alert to the DDoS Mitigation service/system. When a alert is raised by the node under attack, very little information is expected to be provided by DOTS Client to the DDoS mitigation service/system. More particularly telemetric information or characteristics of the attack are likely to be unreliable as the host is already overload. As a result, such DOTS Client may raise an alert without any additional information. Eventually, information such as the asset under attack which can simply be configured. The asset under attack is especially useful for the DDoS mitigation service/system to indicate the origin of the alert. It is not necessary, for example, if the origin of the alert is implicit. The origin of the alert my be implicit, for example when DOTS Clients are authenticated or when the device is identified by the links (i.e when the host is a CPE). Note also that the asset to protect is only informational and optional. This information may be spoofed, and the DDoS mitigation is likely to be derived from the authentication of the alert. In most cases, the DDoS mitigation has been pre-agreed between the host under attack and the DDoS mitigation service/system.</t>
+
+
+<t>When the DOTS Client is hosted on a monitoring system, the monitoring system may raise an alert an attack is ongoing. Unlike the host under attack, the monitoring system is expected to have sufficient resource so it is not itsefl overload and impacted by the ongoing attack. As a result, the DOTS Client is more likely to provide additional information associated to the alert, as tis information is expected to be reliable. The type of information associated may be associated to the asset to protect and eventually some information qualifying the attack. On the other hand, the information associated also depends on how the what has been agreed with DDoS mitigation service/system. In most cases, when a DDoS attack is detected all the traffic is redirected to the DDoS mitigation procedure has been agreed between the DDoS mitigation service/system and the entity hosting the monitoring service. In such cases, very few information is needed.</t>
+
+<t>When the DOTS Client is hosted on an orchestrator, the DOTS Client contacts the DDoS mitigation service/system to initiates a DDoS mitigation. The orchestrator is responsible for setting the network to redirect the traffic to the DDoS mitigation service/system. If the DDoS mitigation service/system is not available, the orchestrator is responsible to find an alternative. Again the orchestrator is likely to provide additional information to the DDoS mitigation service/system. For example, typical information may be the asset to protect, as well as the specific mitigation function requested. On the other hand, the service is usually expected to be associated to the mitigation service, and so may not be explicitly specified. In addition, the DOTS Client is also expected to control how the DDoS mitigation is performed. More specifically, it is expected that the DOTS Client can terminate the DDoS mitigation. In addition, the DOTS Client should have sufficient information to decide how to operate next. For example, it should be able to check if the mitigation is ongoing as well as the efficiency of the mitigation.</t>
+
+<t>When the DOTS client is hosted on an administrative system, the DOTS Client may be triggered by the network administrator to initiate a DDoS mitigation. In this case, the DOTS Server is likely to be an orchestrator, and all necessary information may be provided so the DDoS mitigation can be initiated. This includes, the asset to be protected, the action expected to be performed by the orchestrator, the DDoS mitigation service/system to contact...</t>
+
+
+<t>Note that information associated by the DOTS Client to a request for mitigation is not limited. However, as DDoS mitigation systems are highly heterogeneous, if there is a need to provide interoperability between the vendors and DDoS mitigation services/systems, that actions provided by a DOTS Clients remains small and accepted by all services/systems. As a result here are the envisioned optional information provided by the DOTS Client.
+<list style="format (%c)">
+   <t>recommended asset to protect (IP, port). This information specifies the expected action from the DDoS mitigation service/system.</t>
+   <t>optional DDoS Mitigation Contract ID: which references the contract agreed out-of-band. This information specifies the expected action from the DDoS mitigation service/system.</t>
+   <t>optional Requested Service: which designates the function or service associated to the DDoS mitigation service/system. This information specifies the expected action from the DDoS mitigation service/system.</t>
+   <t>optional DDoS attack information (suspected attack, telemetry ): This information is expected to help the mitigation service/system to diagnose the ongoing attack.</t>
+</list>
+</t>
+
+
+<t>In both cases, the DOTS Client sends a request for DDoS mitigation to the DOTS Server, and expects the DDoS mitigation service/system mitigates the DDoS attack. The difference between sending a request for DDoS mitigation as an alert or for coordinating an DDoS mitigation is that an alert is a request to completely outsource the mitigation, whereas the coordination requires additional control over the DDoS mitigation. An alert may be acknowledged by the DOTS Server to acknowledge the reception whereas during the coordination, the the DOTS server may acknowledge the initiation of the DDoS mitigation.</t>
+
+</section>
+
+
+<section title="DOTS Server Taxonomy">
+
+<t>DOTS Servers terminate the DOTS communication. The DOTS Server is typically hosted on a DDoS mitigation service/system or an intermediary node such as an orchestrator.</t>
+
+<t>The DOTS Server is expected to be the entry point of a DDoS mitigation service/system. Some DOTS Client do not expect any interaction from the DOTS Server, once a DDoS mitigation has been requested. This is especially true for DOTS Client hosted on attack target. Other DOTS Client hosted on orchestrators or DDoS mitigation service/systems are likely to expect for the DOTS Server a confirmation the system accepts the DDoS mitigation task. Respectively, these DOTS Client are also likely to expect a confirmation when a DDoS mitigation termination has been requested. In addition, DOTS Server are also expected to provide information related to the mitigation status when requested by the DOTS Client. In addition, it is also expected that the DOTS Server could provide some status report of the DDoS mitigation on a push basis.</t>
+
+</section>
+
+
+<section title="DOTS Message Taxonomy">
+
+<t>The core essential messages to coordination an heterogeneous set of DDoS mitigation services/system needs to be small and enable future options. Here are the different exchanges envisioned in this document between a DOTS Client and a DOTS Server.
+<list style="format (%c)">
+    <t>DOTS MITIGATION CONTROL messages are used by the DOTS Client to initiate or terminate a DDoS mitigation. The initiator the termination can be specified by the action type START or STOP. Such message can carry some additional options that specify additional information such as the asset under attack for example. These DOTS MITIGATION CONTROL messages are expected to be ACKed by the DOTS Server, in order to indicate the DOTS Server will perform the requested action. In any other case an error is expected to be returned. ven in the case of a DOTS Client sends an alert, ACK is recommended so the DOTS Client stop sending the alert.</t>
+    <t>DOTS MITIGATION INFORMATIONAL message are left for any additional interaction between a DOTS Client and DOTS Server regarding an ongoing request. INFORMATIONAL message can be ignored by the receiver if it does not not understand the the requested information or options. In the current document an informational message can be the status of the ongoing mitigation.</t>
+    <t>DOTS ERROR contains the errors associated to a request.</t>
+</list>
+</t>
+<t>DOTS OPTIONS: options can be used to indicate some optional information. The option is expected to specify whether the DOTS Server can ignore it or must return an error if it is not understood. Options are not message, but part of the message.</t> 
+
+
+</section>
+</section>
+
+<section title="Security Considerations">
+<t>
+	DOTS is at risk from three primary attacks: DOTS agent 
+	impersonation, traffic injection, and signaling blocking.  The DOTS 
+	protocol MUST be designed for minimal data transfer to address the 
+	blocking risk.
+</t>
+<t>
+	Impersonation and traffic injection mitigation can be managed 
+	through current secure communications best practices.  DOTS is not 
+	subject to anything new in this area.  One consideration could be 
+	to minimize the security technologies in use at any one time.  The 
+	more needed, the greater the risk of failures coming from 
+	assumptions on one technology providing protection that it does not 
+	in the presence of another technology.
+</t>
+<t>
+	Additional details of DOTS security requirements may be found in 
+	<xref target="I-D.ietf-dots-requirements" />.
+</t>
+</section>
+
+<section title="IANA Considerations">
+<t>
+	No IANA considerations exist for this document at this time.
+</t>
+</section>
+
+<section title="Acknowledgments">
+<t>
+	TBD
+</t>
+</section>
+
+</middle>
+  <back>
+
+
+    <references title="Normative References">
+	<?rfc include="reference.RFC.2119.xml"?>
+    </references>
+
+    <references title="Informative References">
+
+	<?rfc include="reference.I-D.ietf-dots-requirements.xml"?>
+	<?rfc include="reference.RFC.6335.xml"?>
+
+   <reference anchor="APACHE" target="https://www.modsecurity.org">
+        <front>
+        <title>Apache mod_security</title>
+        <author>
+        <organization></organization>
+        </author>
+        <date/>
+        </front>
+    </reference>
+
+   <reference anchor="RRL" target="https://deepthought.isc.org/article/AA-00994/0/Using-the-Response-Rate-Limiting-Feature-in-BIND-9.10.html">
+        <front>
+        <title>BIND RRL</title>
+        <author>
+        <organization></organization>
+        </author>
+        <date/>
+        </front>
+    </reference>
+
+    </references>
 <section title="Use Cases">
 <t>
 	This section provides a high-level overview of likely use cases and 
@@ -1077,73 +1203,6 @@
     </section>
     
 </section>
-
-<section title="Security Considerations">
-<t>
-	DOTS is at risk from three primary attacks: DOTS agent 
-	impersonation, traffic injection, and signaling blocking.  The DOTS 
-	protocol MUST be designed for minimal data transfer to address the 
-	blocking risk.
-</t>
-<t>
-	Impersonation and traffic injection mitigation can be managed 
-	through current secure communications best practices.  DOTS is not 
-	subject to anything new in this area.  One consideration could be 
-	to minimize the security technologies in use at any one time.  The 
-	more needed, the greater the risk of failures coming from 
-	assumptions on one technology providing protection that it does not 
-	in the presence of another technology.
-</t>
-<t>
-	Additional details of DOTS security requirements may be found in 
-	<xref target="I-D.ietf-dots-requirements" />.
-</t>
-</section>
-
-<section title="IANA Considerations">
-<t>
-	No IANA considerations exist for this document at this time.
-</t>
-</section>
-
-<section title="Acknowledgments">
-<t>
-	TBD
-</t>
-</section>
-
-</middle>
-  <back>
-    <references title="Normative References">
-	<?rfc include="reference.RFC.2119.xml"?>
-    </references>
-
-    <references title="Informative References">
-
-	<?rfc include="reference.I-D.ietf-dots-requirements.xml"?>
-	<?rfc include="reference.RFC.6335.xml"?>
-
-   <reference anchor="APACHE" target="https://www.modsecurity.org">
-        <front>
-        <title>Apache mod_security</title>
-        <author>
-        <organization></organization>
-        </author>
-        <date/>
-        </front>
-    </reference>
-
-   <reference anchor="RRL" target="https://deepthought.isc.org/article/AA-00994/0/Using-the-Response-Rate-Limiting-Feature-in-BIND-9.10.html">
-        <front>
-        <title>BIND RRL</title>
-        <author>
-        <organization></organization>
-        </author>
-        <date/>
-        </front>
-    </reference>
-
-    </references>
 
   </back>
 </rfc>

@@ -1,0 +1,1149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+]>
+
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+ <?rfc toc="yes" ?>
+ <?rfc symrefs="yes" ?>
+ <?rfc sortrefs="yes"?> 
+ <?rfc compact="yes" ?>
+ <?rfc subcompact="no" ?>  
+ <?rfc iprnotified="no" ?>
+  <?rfc strict="no" ?>
+
+
+<rfc category="info" ipr="trust200902" docName="draft-ietf-dots-use-cases-01.txt">
+
+<front>
+<title abbrev="DOTS Use cases">Use cases for DDoS Open Threat Signaling</title>
+
+     <author fullname="Roland Dobbins" initials="R." surname="Dobbins" role="editor">
+     <organization>Arbor Networks</organization>
+     <address>
+     <postal>
+     <street>30 Raffles Place</street>
+	 <street>Level 17 Chevron House</street>
+     <city>Singapore 048622</city>
+     <country>Singapore</country>
+     </postal>
+     <email>rdobbins@arbor.net</email>
+     </address>
+     </author>
+ 
+    <author fullname="Stefan Fouant" initials="S." surname="Fouant">
+      <organization> Corero Network Security </organization>
+      <address>
+        <email> Stefan.Fouant@corero.com </email>
+      </address>
+    </author>
+
+    <author fullname="Daniel Migault" initials="D." surname="Migault">
+      <organization> Ericsson </organization>
+      <address>
+        <postal>
+          <street> 8400 boulevard Decarie</street>
+          <city> Montreal</city>
+           <region>QC</region>
+         <code> H4P 2N2 </code>
+          <country>Canada</country>
+        </postal>
+        <phone> +1 514-452-2160 </phone>
+        <email> daniel.migault@ericsson.com </email>
+      </address>
+    </author>
+
+    <author fullname="Robert Moskowitz" initials="R." surname="Moskowitz">
+      <organization>HTT Consulting
+      </organization>
+      <address>
+        <postal>
+        <street></street>
+        <city>Oak Park</city>
+        <region>MI</region>
+		<code>48237</code>
+        <country>USA</country>
+        </postal>
+        <email>rgm@labs.htt-consult.com</email>
+      </address>
+    </author>
+
+	<author fullname="Nik Teague" initials="N." surname="Teague">
+	  <organization>Verisign Inc</organization>
+	  <address>
+	  <postal>
+	  <street>12061 Bluemont Way</street>
+	  <city>Reston</city>
+      <region>VA</region>
+      <code>20190</code>
+	  <country>USA</country>
+	  </postal>
+	  <phone>+44 791 763 5384</phone>
+	  <email>nteague@verisign.com</email>
+	</address>
+	</author>
+
+     <author fullname="Liang Xia" initials="L." surname="Xia">
+        <organization>Huawei</organization>
+        <address>
+        <postal>
+        <street>No. 101, Software Avenue, Yuhuatai District</street>
+        <city>Nanjing</city>
+        <country>China</country>
+        </postal>
+        <phone></phone>
+        <email>Frank.xialiang@huawei.com</email>
+        </address>
+        </author>
+
+<date year="2016" />
+   <area>Security Area</area>
+    <workgroup> DOTS WG</workgroup>
+    <keyword>RFC</keyword>
+     <keyword>Request for Comments</keyword>
+     <keyword>I-D</keyword>
+     <keyword>Internet-Draft</keyword>
+
+    <abstract>
+<t>
+	This document delineates principal and ancillary use cases for DDoS 
+	Open Threat Signaling (DOTS), a communications protocol intended to 
+	facilitate the programmatic, coordinated mitigation of Distributed 
+	Denial of Service (DDoS) attacks via a standards-based mechanism. 
+	DOTS is purposely designed to support requests for DDoS mitigation 
+	services and status updates across inter-organizational 
+	administrative boundaries.
+</t>
+    </abstract>
+
+</front>
+  <middle>
+
+<section title="Introduction" anchor="intro"> 
+<t>
+   Currently, distributed denial-of-service (DDoS) attack mitigation 
+   solutions/services are largely based upon siloed, proprietary 
+   communications paradigms which result in vendor/service lock-in, and 
+   as a side-effect make the configuration, provisioning, operation, 
+   and activation of these solutions a highly manual and often time- 
+   consuming process.  Additionally, coordination of multiple DDoS 
+   mitigation solutions/services simultaneously engaged in defending 
+   the same organization against DDoS attacks is fraught with both 
+   technical and process-related hurdles which greatly increase 
+   operational complexity and often result in suboptimal DDoS attack 
+   mitigation efficacy.
+</t>
+<t>
+   The DDoS Open Threat Signaling (DOTS) effort is intended to 
+   facilitate interoperability between DDoS solutions/services by 
+   providing a standards-based, programmatic communications mechanism 
+   for the invitation and termination of heterogeneous DDoS attack 
+   mitigation systems and services.  This allows for a much higher 
+   degree of automation and concomitant efficacy and rapidity of DDoS 
+   attack mitigation involving multiple DDoS mitigation systems and 
+   services than is currently the norm, as well as providing additional 
+   benefits such as automatic DDoS mitigation service registration and 
+   provisioning.  It should be noted that DOTS is not in and of itself 
+   intended to perform orchestration functions duplicative of the 
+   functionality being developed by the [I2NSF] WG; rather, DOTS is 
+   intended to allow devices, services, and applications to request 
+   mitigation assistance and receive mitigation status updates from 
+   systems of this nature.
+</t>
+<t>
+   This document provides an overview of common DDoS mitigation system/ 
+   service deployment and operational models which are in use today, 
+   but which are currently limited in scope to a single vendor or 
+   service provider and are often highly manual in nature, which can 
+   lead to miscommunications, misconfigurations, and delays in bringing 
+   mitigation services to bear against an attack.  The introduction of 
+   DOTS into these scenarios will reduce reaction times and the risks 
+   associated with manual processes, simplify the use of multiple types 
+   of DDoS mitigation systems and services as required, and make 
+   practical the simultaneous use multiple DDoS mitigation systems and 
+   services as circumstances warrant.
+</t>
+</section>
+
+<section anchor="terms" title="Terminology and Acronyms">
+	<section title="Requirements Terminology">
+	<t>
+		The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL 
+		NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and 
+		"OPTIONAL" in this document are to be interpreted as described 
+		in <xref target="RFC2119">RFC 2119</xref>.
+	</t> 
+	</section> 
+	<section title="Acronyms">
+	<t>
+		This document makes use of the same terminology and definitions 
+		as <xref target="I-D.ietf-dots-requirements" />, except where 
+		noted.
+	</t>
+	</section> 
+</section>
+
+<section title="Use Cases">
+<t>
+	This section provides a high-level overview of likely use cases and 
+	deployment scenarios for DOTS-enabled DDoS mitigation services.  It 
+	should be noted that DOTS servers may be standalone entities which, 
+	upon receiving a DOTS mitigation service request from a DOTS 
+	client, proceed to initiate DDoS mitigation service by 
+	communicating directly or indirectly with DDoS mitigators, and 
+	likewise terminate the service upon receipt of a DOTS service 
+	termination request; conversely, the DDoS mitigators themselves may 
+	incorporate DOTS servers and/or DOTS clients.  The mechanisms by 
+	which DOTS servers initiate and terminate DDoS mitigation service 
+	with DDoS mitigators is beyond the scope of this document.
+</t>
+<t>
+	All of the primary use cases described in this section are derived 
+	from current, real-world DDoS mitigation functionality, 
+	capabilities, and operational models.
+</t>
+<t>
+	The posited ancillary use cases described in this section are 
+	reasonable and highly desirable extrapolations of the functionality 
+	of baseline DOTS capabilities, and are readily attainable in the 
+	near term.
+</t>
+<t>
+	Each of the primary and ancillary use cases described in this 
+	section may be read as involving one or more DDoS mitigation 
+	service providers; DOTS makes multi-provider coordinated DDoS 
+	defenses much more effective and practical due to abstraction of 
+	the particulars of a given DDoS mitigation service/solution set.
+</t>
+<t>
+	Both the primary and ancillary use cases may be facilitated by 
+	direct DOTS client - DOTS server communications or via DOTS relays 
+	deployed in order to aggregate DOTS mitigation service 
+	requests/responses, to mediate between stateless and stateful 
+	underlying transport protocols, to aggregate multiple DOTS requests 
+	and/or responses, to filter DOTS requests and/or responses via 
+	configured policy mechanisms, or some combination of these 
+	functions.
+</t>
+<t>
+	All DOTS messages exchanged between the DOTS clients and DOTS 
+	servers in these use cases may be communicated directly between 
+	DOTS clients and servers, or mediated by one or more DOTS relays 
+	residing on the network of the originating network, the network 
+	where upstream DDoS mitigation service takes place, an intervening 
+	network or networks, or some combination of the above.
+</t>
+<t>
+	DOTS is intended to apply to both inter- and intra-domain DDoS 
+	attack mitigation scenarios.  The technical and operational 
+	requirements for inter- and intra-domain DOTS communications are 
+	identical.  The main difference is administrative in nature; 
+	although it should be noted that provisioning challenges which are 
+	typically associated with inter- domain DOTS communications 
+	relationships may also apply in intra- domain deployment scenarios, 
+	based upon organizational factors.  All of the same complexities 
+	surrounding authentication and authorization can apply in both 
+	contexts, including considerations such as network access policies 
+	to allow DOTS communications, DOTS transport selection (including 
+	considerations of the implications of link congestion if a stateful 
+	DOTS transport option is selected), etc.  Registration of 
+	well-known ports for DOTS transports per <xref target="RFC6335"/> 
+	should be considered in light of these challenges.
+</t>
+<t>
+	It should also be noted that DOTS does not directly ameliorate the 
+	various administrative challenges required for successful DDoS 
+	attack mitigation. Letters of authorization, RADB updates, DNS zone 
+	delegations, alteration of network access policies, technical 
+	configurations required to facilitate network traffic diversion and 
+	re-injection, etc., are all outside the scope of DOTS. DOTS may, 
+	however, prove useful in automating the registration of DOTS 
+	clients with DOTS servers, as well as in the automatic provisioning 
+	of situationally- appropriate DDoS defenses and countermeasures. 
+	This ancillary DOTS functionality is described in <xref 
+	target="Ancillary" />.
+</t>
+<t>
+	Many of the 'external' administrative challenges associated with 
+	establishing workable DDoS attack mitigation service may be 
+	addressed by work currently in progress in the I2RS and I2NSF WGs.  
+	Interested parties may wish to consider tracking those efforts, and 
+	coordination with both I2RS and I2NSF is highly desirable.
+</t>
+<t>
+	Note that all the use-cases in this document are universal in 
+	nature. They apply equally to endpoint networks, transit backbone 
+	providers, cloud providers, broadband access providers, ASPs, CDNs, 
+	etc.  They are not specific to particular business models, 
+	topological models, or application types, and are deliberately 
+	generalizable.  Both networks targeted for attack as well as any 
+	adjacent or topologically distant networks involved in a given 
+	scenario may be either single- or multi-homed.   In the 
+	accompanying vector illustrations incorporated into 
+	draft-ietf-dots-use-cases-01.pdf, specific business and topological 
+	models are described in order to provide context.
+</t>
+<t>
+	Likewise, both DOTS itself and the use cases described in this 
+	document are completely independent of technologies utilized for 
+	the detection, classification, traceback, and mitigation of DDoS 
+	attacks.  Flow telemetry such as NetFlow and IPFIX, direct 
+	full-packet analysis, log-file analysis, indirection manual 
+	observation, etc. can and will be enablers for detection, 
+	classification and traceback. Intelligent DDoS mitigation systems 
+	(IDMSes), flowspec, S/RTBH, ACLs, and other network traffic 
+	manipulation tools and techniques may be used for DDoS attack 
+	mitigation.  BGP, flowspec, DNS, inline deployment, and various 
+	'NFV' technologies may be used for network traffic diversion into 
+	mitigation centers or devices in applicable scenarios; GRE, MPLS, 
+	'NFV', inline deployment and other techniques may be utilized for 
+	'cleaned' traffic re-injection to its intended destination.
+</t>
+<t>
+	The scope, format, and content of all DOTS message types cited in 
+	this document must be codified by the DOTS WG.
+</t>
+<t>
+	The following use cases are intended to inform the DOTS 
+	requirements described in <xref target="I-D.ietf-dots-requirements" 
+	/>.
+</t>
+
+    <section title="Primary Use Cases">
+
+	<section title="Automatic or Operator-Assisted CPE or PE Mitigators 
+	Request Upstream DDoS Mitigation Services">
+<t>
+	One or more CPE or PE mitigators with DOTS client capabilities may 
+	be configured to signal to one or more DOTS servers in order to 
+	request upstream DDoS mitigation service initiation during an 
+	attack when DDoS attack volumes and/or attack characteristics 
+	exceed the capabilities of such CPE mitigators.  DDoS mitigation 
+	service may be terminated either automatically or manually via a 
+	DOTS mitigation service termination request initiated by the 
+	mitigator when it has been determined that the DDoS attack has 
+	ended.
+	<list style="format (%c)">
+	<t>
+		A DDoS attack is initiated against online properties of an 
+		organization which has deployed DOTS-client-capable DDoS 
+		mitigators.
+	</t>
+	<t>
+		CPE or PE DDoS mitigators detect, classify, and begin 
+		mitigating the DDoS attack.
+	</t>
+	<t>
+		CPE or PE DDoS mitigators determine that their capacity and/or 
+		capability to mitigate the DDoS attack is insufficient, and 
+		utilize their DOTS client functionality to send a DOTS 
+		mitigation service initiation request to one or more DOTS 
+		servers residing on one or more upstream transit networks, peer 
+		networks, or overlay MSSP networks. This DOTS mitigation 
+		service initiation request may be automatically initiated by 
+		the CPE or PE DDoS mitigators, or may be manually triggered by 
+		personnel of the requesting organization in response to an 
+		alert from the mitigators (the mechanism by which this process 
+		takes place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers which receive the DOTS mitigation service 
+		initiation requests determine that they have been configured to 
+		honor requests from the requesting CPE or PE mitigators, and 
+		initiate situationally-appropriate DDoS mitigation service on 
+		their respective networks (the mechanism by which this process 
+		takes place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS service status message to the 
+		requesting CPE or PE mitigators indicating that upstream DDoS 
+		mitigation service has been initiated.
+	</t>
+	<t>
+		While DDoS mitigation services are active, the DOTS servers 
+		regularly transmit DOTS mitigation status updates to the 
+		requesting CPE or PE mitigators.
+	</t>
+	<t>
+		While DDoS mitigation services are active, the CPE or PE 
+		mitigators may optionally regularly transmit DOTS mitigation 
+		efficacy updates to the relevant DOTS servers.
+	</t>
+	<t>
+		When the upstream DDoS mitigators determine that the DDoS 
+		attack has ceased, they indicate this change in status to their 
+		respective DOTS servers (the mechanism by which this process 
+		takes place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS mitigation status update to 
+		the CPE or PE mitigators indicating that the DDoS attack has 
+		ceased.
+	</t>
+	<t>
+		The CPE or PE DDoS mitigators transmit a DOTS mitigation 
+		service termination request to the DOTS servers. This DOTS 
+		mitigation service termination request may be automatically 
+		initiated by the CPE or PE DDoS mitigators, or may be manually 
+		triggered by personnel of the requesting organization in 
+		response to an alert from the mitigators or a management system 
+		which monitors them (the mechanism by which this process takes 
+		place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers terminate DDoS mitigation service on their 
+		respective networks (the mechanism by which this process takes 
+		place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS mitigation status update to 
+		the CPE or PE mitigators indicating that DDoS mitigation 
+		services have been terminated.
+	</t>
+	<t>
+		The CPE or PE DDoS mitigators transmit a DOTS mitigation 
+		termination status acknowledgement to the DOTS servers.
+	</t>
+	</list>
+</t>
+</section>
+
+	<section title="Automatic or Operator-Assisted CPE or PE Network 
+	Infrastructure Element Request to Upstream Mitigator">
+
+<t>
+	CPE or PE network infrastructure elements such as routers, 
+	switches, load-balancers, firewalls, 'IPSes', etc. which have the 
+	capability to detect and classify DDoS attacks and which have DOTS 
+	client capabilities may be configured to signal to one or more DOTS 
+	servers in order to request upstream DDoS mitigation service 
+	initiation during an attack.  DDoS mitigation service may be 
+	terminated either automatically or manually via a DOTS mitigation 
+	service termination request initiated by the network element when 
+	it has been determined that the DDoS attack has ended.
+</t>
+<t>
+	In this use-case, the network elements involved are not engaged in 
+	mitigating DDoS attack traffic.  They are signaling for upstream 
+	attack mitigation assistance.  This can be an inter- or intra- 
+	domain use-case.
+	<list style="format (%c)">
+	<t>
+		A DDoS attack is initiated against online properties of an 
+		organization with DOTS-client-capable network infrastructure 
+		elements deployed.
+	</t>
+	<t>
+		The network infrastructure elements utilize their DOTS client 
+		functionality to send a DOTS mitigation service initiation 
+		request to one or more DOTS servers residing on one or more 
+		upstream transit networks, peer networks, or overlay MSSP 
+		networks, either directly or via intermediate DOTS relays 
+		residing upon the requesting organization's network, the 
+		upstream mitigation provider's network, or both.  The scope, 
+		format, and content of these messages must be codified by the 
+		DOTS WG.  This DOTS mitigation service initiation request may 
+		be automatically initiated by the network infrastructure 
+		elements, or may be manually triggered by personnel of the 
+		requesting organization in response to an alert from the 
+		network elements or a management system which monitors them 
+		(the mechanism by which this process takes place is beyond the 
+		scope of this document).
+	</t>
+	<t>
+		The DOTS servers which receive the DOTS mitigation service 
+		initiation requests determine that they have been configured to 
+		honor requests from the requesting network infrastructure 
+		elements, and initiate situationally-appropriate DDoS 
+		mitigation service on their respective networks (the mechanism 
+		by which this process takes place is beyond the scope of this 
+		document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS service status message to the 
+		requesting network infrastructure elements indicating that 
+		upstream DDoS mitigation service has been initiated.
+	</t>
+	<t>
+		While DDoS mitigation services are active, the DOTS servers 
+		regularly transmit DOTS mitigation status updates to the 
+		requesting requesting network infrastructure elements.
+	</t>
+	<t>
+		While DDoS mitigation services are active, the network 
+		infrastructure elements may optionally regularly transmit DOTS 
+		mitigation efficacy updates to the relevant DOTS servers.
+	</t>
+	<t>
+		When the upstream DDoS mitigators determine that the DDoS 
+		attack has ceased, they indicate this change in status to their 
+		respective DOTS servers (the mechanism by which this process 
+		takes place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS mitigation status update to 
+		the network infrastructure elements indicating that the DDoS 
+		attack has ceased.
+	</t>
+	<t>
+		The network infrastructure elements transmit a DOTS mitigation 
+		service termination request to the DOTS servers.  This DOTS 
+		mitigation service termination request may be automatically 
+		initiated by the network infrastructure elements, or may be 
+		manually triggered by personnel of the requesting organization 
+		in response to an alert from the mitigators (the mechanism by 
+		which this process takes place is beyond the scope of this 
+		document).
+	</t>
+	<t>
+		The DOTS servers terminate DDoS mitigation service on their 
+		respective networks (the mechanism by which this process takes 
+		place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS mitigation status update to 
+		the network infrastructure elements indicating that DDoS 
+		mitigation services have been terminated.
+	</t>
+	<t>
+		The network infrastructure elements transmit a DOTS mitigation 
+		termination status acknowledgement to the DOTS servers.
+	</t>
+	</list>
+</t>
+
+    </section>
+
+	<section title="Automatic or Operator-Assisted CPE or PE Attack 
+	Telemetry Detection/Classification System Request to Upstream 
+	Mitigator">
+
+<t>
+	CPE or PE Attack Telemetry Detection/Classification Systems which 
+	have DOTS client capabilities may be configured so that upon 
+	detecting and classifying a DDoS attack, they signal one or more 
+	DOTS servers in order to request upstream DDoS mitigation service 
+	initiation.  DDoS mitigation service may be terminated either 
+	automatically or manually via a DOTS mitigation service termination 
+	request initiated by the Attack Telemetry Detection/Classification 
+	System when it has been determined that the DDoS attack has ended.
+</t>   
+<t>
+	In this use-case, the Attack Telemetry Detection/Classification 
+	does not possess any inherent capability to mitigate DDoS attack 
+	traffic, and is signaling for upstream mitigation assistance.  This 
+	can be an inter- or intra-domain use-case.
+	<list style="format (%c)">
+	<t>
+		A DDoS attack is initiated against online properties of an 
+		organization with DOTS-client-capable CPE or PE Attack 
+		Telemetry Detection/Classification Systems deployed.
+	</t>
+	<t>
+		The CPE or PE Attack Telemetry Detection/Classification Systems 
+		utilize their DOTS client functionality to send a DOTS 
+		mitigation service initiation request to one or more DOTS 
+		servers residing on one or more upstream transit networks, peer 
+		networks, or overlay MSSP networks, either directly or via 
+		intermediate DOTS relays residing upon the requesting 
+		organization's network, the upstream mitigation provider's 
+		network, or both.   This DOTS mitigation service initiation 
+		request may be automatically initiated by the CPE or PE Attack 
+		Telemetry Detection/Classification Systems, or may be manually 
+		triggered by personnel of the requesting organization in 
+		response to an alert from the CPE or PE Attack Telemetry 
+		Detection/Classification Systems (the mechanism by which this 
+		process takes place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers which receive the DOTS mitigation service 
+		initiation requests determine that they have been configured to 
+		honor requests from the requesting CPE or PE Attack Telemetry 
+		Detection/Classification Systems, and initiate situationally- 
+		appropriate DDoS mitigation service on their respective 
+		networks (the mechanism by which this process takes place is 
+		beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS service status message to the 
+		requesting CPE or PE Attack Telemetry Detection/Classification 
+		Systems indicating that upstream DDoS mitigation service has 
+		been initiated.
+	</t>
+	<t>
+		While DDoS mitigation services are active, the DOTS servers 
+		regularly transmit DOTS mitigation status updates to the 
+		requesting CPE or PE Attack Telemetry Detection/Classification 
+		Systems.
+	</t>
+	<t>
+		While DDoS mitigation services are active, the CPE or PE Attack 
+		Telemetry Detection/Classification Systems may optionally 
+		regularly transmit DOTS mitigation efficacy updates to the 
+		relevant DOTS servers.
+	</t>
+	<t>
+		When the upstream DDoS mitigators determine that the DDoS 
+		attack has ceased, they indicate this change in status to their 
+		respective DOTS servers (the mechanism by which this process 
+		takes place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS mitigation status update to the
+        CPE or PE Attack Telemetry Detection/Classification Systems
+        indicating that the DDoS attack has ceased.
+	</t>
+	<t>
+		The CPE or PE Attack Telemetry Detection/Classification Systems 
+		transmit a DOTS mitigation service termination request to the 
+		DOTS servers.   This DOTS mitigation service termination 
+		request may be automatically initiated by the CPE or PE Attack 
+		Telemetry Detection/Classification Systems, or may be manually 
+		triggered by personnel of the requesting organization in 
+		response to an alert from the CPE or PE Attack Telemetry 
+		Detection/Classification Systems (the mechanism by which this 
+		process takes place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers terminate DDoS mitigation service on their 
+		respective networks (the mechanism by which this process takes 
+		place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS mitigation status update to 
+		the CPE or PE Attack Telemetry Detection/Classification Systems 
+		indicating that DDoS mitigation services have been terminated.
+	</t>
+	<t>
+		The CPE or PE Attack Telemetry Detection/Classification Systems 
+		transmit a DOTS mitigation termination status acknowledgement 
+		to the DOTS servers.
+	</t>
+	</list>
+    </t>
+
+    </section>
+
+	<section title="Automatic or Operator-Assisted Targeted Service/
+        Application Request to Upstream Mitigator">
+    <t>
+   A service or application which is the target of a DDoS attack and 
+   which has the capability to detect and classify DDoS attacks (i.e, 
+   Apache mod_security <xref target="APACHE" />, BIND RRL <xref 
+   target="RRL" />, etc.) as well as DOTS client functionality may be 
+   configured so that upon detecting and classifying a DDoS attack, it 
+   signals one or more DOTS servers in order to request upstream DDoS 
+   mitigation service initiation.  DDoS mitigation service may be 
+   terminated either automatically or manually via a DOTS mitigation 
+   service termination request initiated by the service/application 
+   when it has been determined that the DDoS attack has ended.
+</t>
+<t>
+   In this use-case, the service/application does not possess inherent 
+   DDoS attack mitigation capabilities, and is signaling for upstream 
+   mitigation assistance.  This can be an inter- or intra-domain 
+   use-case.
+	<list style="format (%c)">
+	<t>
+		A DDoS attack is initiated against online properties of an 
+		organization which include DOTS-client-capable services or 
+		applications that are the specific target(s) of the attack.
+	</t>
+	<t>
+		The targeted services or applications utilize their DOTS client 
+		functionality to send a DOTS mitigation service initiation 
+		request to one or more DOTS servers residing on the same 
+		network as the services or applications, one or more upstream 
+		transit networks, peer networks, or overlay MSSP networks, 
+		either directly or via intermediate DOTS relays residing upon 
+		the requesting organization's network, the upstream mitigation 
+		provider's network, or both. This DOTS mitigation service 
+		initiation request may be automatically initiated by the 
+		targeted services or applications, or may be manually triggered 
+		by personnel of the requesting organization in response to an 
+		alert from the targeted services or applications or a system 
+		which monitors them (the mechanism by which this process takes 
+		place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers which receive the DOTS mitigation service 
+		initiation requests determine that they have been provisioned 
+		to honor requests from the requesting services or applications, 
+		and initiate situationally-appropriate DDoS mitigation service 
+		on their respective networks (the mechanism by which this 
+		process takes place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS service status message to the 
+		services or applications indicating that upstream DDoS 
+		mitigation service has been initiated
+	</t>
+	<t>
+		While DDoS mitigation services are active, the DOTS servers 
+		regularly transmit DOTS mitigation status updates to the 
+		requesting services or applications.
+	</t>
+	<t>
+		While DDoS mitigation services are active, the requesting 
+		services or applications may optionally regularly transmit DOTS 
+		mitigation efficacy updates to the relevant DOTS servers.
+	</t>
+	<t>
+		When the upstream DDoS mitigators determine that the DDoS 
+		attack has ceased, they indicate this change in status to their 
+		respective DOTS servers (the mechanism by which this process 
+		takes place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS mitigation status update to 
+		the requesting services or applications indicating that the 
+		DDoS attack has ceased.
+	</t>
+	<t>
+		The targeted services or applications transmit a DOTS 
+		mitigation service termination request to the DOTS servers.   
+		This DOTS mitigation service termination request may be 
+		automatically initiated by the targeted services or 
+		applications, or may be manually triggered by personnel of the 
+		requesting organization in response to an alert from a system 
+		which monitors them (the mechanism by which this process takes 
+		place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers terminate DDoS mitigation service on their 
+		respective networks (the mechanism by which this process takes 
+		place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS mitigation status update to 
+		the targeted services or applications indicating that DDoS 
+		mitigation services have been terminated.
+	</t>
+	<t>
+		The targeted services or applications transmit a DOTS 
+		mitigation termination status acknowledgement to the DOTS 
+		servers.
+	</t>
+	</list>
+    </t>
+
+	</section>
+
+	<section anchor="Web-Portal" title="Manual Web Portal Request to 
+	Upstream Mitigator">
+	<t>
+	A Web portal which has DOTS client capabilities has been configured 
+	in order to allow authorized personnel of organizations which are 
+	targeted by DDoS attacks to manually request upstream DDoS 
+	mitigation service initiation from a DOTS server.  When an 
+	organization has reason to believe that it is under active attack, 
+	authorized personnel may utilize the Web portal to manually 
+	initiate a DOTS client mitigation request to one or more DOTS 
+	servers.  DDoS mitigation service may be terminated manually via a 
+	DOTS mitigation service termination request through the Web portal 
+	when it has been determined that the DDoS attack has ended.
+</t>
+<t>
+	In this use-case, the organization targeted for attack does not 
+	possess any automated or operator-assisted mechanisms for DDoS 
+	attack detection, classification, traceback, or mitigation; the 
+	existence of an attack has been inferred manually, and the 
+	organization is requesting upstream mitigation assistance.  This 
+	can theoretically be an inter- or intra-domain use-case, but is 
+	more typically an inter-domain scenario.
+	<list style="format (%c)">
+	<t>
+		A DDoS attack is initiated against online properties of an 
+		organization have access to a Web portal which incorporates 
+		DOTS client functionality and can generate DOTS mitigation 
+		service requests upon demand.
+	</t>
+	<t>
+		Authorized personnel utilize the Web portal to send a DOTS 
+		mitigation service initiation request to one or more upstream 
+		transit networks, peer networks, or overlay MSSP networks, 
+		either directly or via intermediate DOTS relays residing upon 
+		the requesting organization's network, the upstream mitigation 
+		provider's network, or both. This DOTS mitigation service 
+		initiation request is manually triggered by personnel of the 
+		requesting organization when it is judged that the organization 
+		is under DDoS attack (the mechanism by which this process takes 
+		place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers which receive the DOTS mitigation service 
+		initiation requests determine that they have been provisioned 
+		to honor requests from the Web portal, and initiate 
+		situationally- appropriate DDoS mitigation service on their 
+		respective networks (the mechanism by which this process takes 
+		place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS service status message to the 
+		Web portal indicating that upstream DDoS mitigation service has 
+		been initiated.
+	</t>
+	<t>
+		While DDoS mitigation services are active, the DOTS servers 
+		regularly transmit DOTS mitigation status updates to the Web 
+		portal.
+	</t>
+	<t>
+		While DDoS mitigation services are active, the Web portal may 
+		optionally regularly transmit manually-triggered DOTS 
+		mitigation efficacy updates to the relevant DOTS servers.
+	</t>
+	<t>
+		When the upstream DDoS mitigators determine that the DDoS 
+		attack has ceased, they indicate this change in status to their 
+		respective DOTS servers (the mechanism by which this process 
+		takes place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS mitigation status update to 
+		the Web portal indicating that the DDoS attack has ceased.
+	</t>
+	<t>
+		The Web portal transmits a manually-triggered DOTS mitigation 
+		service termination request to the DOTS servers (the mechanism 
+		by which this process takes place is beyond the scope of this 
+		document).
+	</t>
+	<t>
+		The Web portal transmits a manually-triggered DOTS mitigation 
+		service termination request to the DOTS servers (the mechanism 
+		by which this process takes place is beyond the scope of this 
+		document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS mitigation status update to 
+		the Web portal indicating that DDoS mitigation services have 
+		been terminated.
+	</t>
+	<t>
+		The Web portal transmits a DOTS mitigation termination status 
+		acknowledgement to the DOTS servers.
+	</t>
+	</list>
+	</t>
+
+	</section>
+
+	<section title="Manual Mobile Device Application Request to 
+	Upstream Mitigator">
+	<t>
+	An application for mobile devices such as smartphones and tablets 
+	which incorporates DOTS client capabilities has been made available 
+	to authorized personnel of an organization. When the organization 
+	has reason to believe that it is under active DDoS attack, 
+	authorized personnel may utilize the mobile device application to 
+	manually initiate a DOTS client mitigation request to one or more 
+	DOTS servers in order to initiate upstream DDoS mitigation 
+	services.  DDoS mitigation service may be terminated manually via a 
+	DOTS mitigation service termination request initiated through the 
+	mobile device application when it has been determined that the DDoS 
+	attack has ended.
+</t>
+<t>
+	This use-case is similar to the one described in <xref 
+	target="Web-Portal" />; the difference is that a mobile application 
+	provided by the DDoS mitigation service provider is used to request 
+	upstream attack mitigation assistance. This can theoretically be an 
+	inter- or intra-domain use-case, but is more typically an 
+	inter-domain scenario.
+	<list style="format (%c)">
+	<t>
+		A DDoS attack is initiated against online properties of an 
+		organization have access to a Web portal which incorporates 
+		DOTS client functionality and can generate DOTS mitigation 
+		service requests upon demand.
+	</t>
+	<t>
+		Authorized personnel utilize the mobile application to send a 
+		DOTS mitigation service initiation request to one or more DOTS 
+		servers residing on the same network as the targeted Internet 
+		properties, one or more upstream transit networks, peer 
+		networks, or overlay MSSP networks, either directly or via 
+		intermediate DOTS relays residing upon the requesting 
+		organization's network, the upstream mitigation provider's 
+		network, or both. This DOTS mitigation service initiation 
+		request is manually triggered by personnel of the requesting 
+		organization when it is judged that the organization is under 
+		DDoS attack (the mechanism by which this process takes place is 
+		beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers which receive the DOTS mitigation service 
+		initiation requests determine that they have been provisioned 
+		to honor requests from the mobile application, and initiate 
+		situationally-appropriate DDoS mitigation service on their 
+		respective networks (the mechanism by which this process takes 
+		place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS service status message to the 
+		mobile application indicating that upstream DDoS mitigation 
+		service has been initiated.
+	</t>
+	<t>
+		While DDoS mitigation services are active, the DOTS servers 
+		regularly transmit DOTS mitigation status updates to the mobile 
+		application.
+	</t>
+	<t>
+		While DDoS mitigation services are active, the mobile 
+		application may optionally regularly transmit 
+		manually-triggered DOTS mitigation efficacy updates to the 
+		relevant DOTS servers.
+	</t>
+	<t>
+		When the upstream DDoS mitigators determine that the DDoS 
+		attack has ceased, they indicate this change in status to their 
+		respective DOTS servers (the mechanism by which this process 
+		takes place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS mitigation status update to 
+		the mobile application indicating that the DDoS attack has 
+		ceased.
+	</t>
+	<t>
+		The mobile application transmits a manually-triggered DOTS 
+		mitigation service termination request to the DOTS servers (the 
+		mechanism by which this process takes place is beyond the scope 
+		of this document).
+	</t>
+	<t>
+		The DOTS servers terminate DDoS mitigation service on their 
+		respective networks (the mechanism by which this process takes 
+		place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS mitigation status update to 
+		the mobile application indicating that DDoS mitigation services 
+		have been terminated.
+	</t>
+	<t>
+		The mobile application transmits a DOTS mitigation termination 
+		status acknowledgement to the DOTS servers.
+	</t>
+	</list>
+	</t>
+
+	</section>
+
+	<section title="Unsuccessful Automatic or Operator-Assisted CPE or 
+	PE Mitigators Request Upstream DDoS Mitigation Services">
+	<t>
+	One or more CPE or PE mitigators with DOTS client capabilities may 
+	be configured to signal to one or more DOTS servers in order to 
+	request upstream DDoS mitigation service initiation during an 
+	attack when DDoS attack volumes and/or attack characteristics 
+	exceed the capabilities of such CPE mitigators.  DDoS mitigation 
+	service may be terminated either automatically or manually via a 
+	DOTS mitigation service termination request initiated by the 
+	mitigator when it has been determined that the DDoS attack has 
+	ended.
+</t>
+<t>
+	This can theoretically be an inter- or intra-domain use-case, but 
+	is more typically an inter-domain scenario.
+	<list style="format (%c)">
+	<t>
+		A DDoS attack is initiated against online properties of an 
+		organization which has deployed DOTS-client-capable DDoS 
+		mitigators.
+	</t>
+	<t>
+		CPE or PE DDoS mitigators detect, classify, and begin 
+		mitigating the DDoS attack.
+	</t>
+	<t>
+		CPE or PE DDoS mitigators determine that their capacity and/or 
+		capability to mitigate the DDoS attack is insufficient, and 
+		utilize their DOTS client functionality to send a DOTS 
+		mitigation service initiation request to one or more DOTS 
+		servers residing on one or more upstream transit networks, peer 
+		networks, or overlay MSSP networks. This DOTS mitigation 
+		service initiation request may be automatically initiated by 
+		the CPE or PE DDoS mitigators, or may be manually triggered by 
+		personnel of the requesting organization in response to an 
+		alert from the mitigators (the mechanism by which this process 
+		takes place is beyond the scope of this document).
+	</t>
+	<t>
+		The DOTS servers which receive the DOTS mitigation service 
+		initiation requests determine that they have been configured to 
+		honor requests from the requesting CPE or PE mitigators, and 
+		attempt to initiate situationally-appropriate DDoS mitigation 
+		service on their respective networks (the mechanism by which 
+		this process takes place is beyond the scope of this document).
+	</t>
+	<t>
+		The DDoS mitigators on the upstream network report back to the 
+		DOTS servers that they are unable to initiate DDoS mitigation 
+		service for the requesting organization due to mitigation 
+		capacity constraints, bandwidth constraints, functionality 
+		constraints, hardware casualties, or other impediments (the 
+		mechanism by which this process takes place is beyond the scope 
+		of this document).
+	</t>
+	<t>
+		The DOTS servers transmit a DOTS service status message to the 
+		requesting CPE or PE mitigators indicating that upstream DDoS 
+		mitigation service cannot be initiated as requested.
+	</t>
+	<t>
+		The CPE or PE mitigators may optionally regularly re-transmit 
+		DOTS mitigation status request messages to the relevant DOTS 
+		servers until acknowledgement that mitigation services have 
+		been initiated.
+	</t>
+	<t>
+		The CPE or PE mitigators may optionally transmit a DOTS 
+		mitigation service initiation request to DOTS servers 
+		associated with a configured fallback upstream DDoS mitigation 
+		service. Multiple fallback DDoS mitigation services may 
+		optionally be configured.
+	</t>
+	<t>
+		The process describe above cyclically continues until the DDoS 
+		mitigation service request is fulfilled; the CPE or PE 
+		mitigators determine that the DDoS attack volume has decreased 
+		to a level and/or complexity which they themselves can 
+		successfully mitigate; the DDoS attack has ceased; or manual 
+		intervention by personnel of the requesting organization has 
+		taken place.
+	</t>
+	</list>
+	</t>
+
+	</section>
+
+</section>
+
+    <section anchor="Ancillary" title="Ancillary Use Cases">
+
+	<section title="Auto-registration of DOTS clients with DOTS 
+	servers">
+<t>
+	An additional benefit of DOTS is that by utilizing agreed-upon 
+	authentication mechanisms, DOTS clients can automatically register 
+	for DDoS mitigation service with one or more upstream DOTS servers. 
+	The details of such registration are beyond the scope of this 
+	document.
+</t>
+
+    </section>
+
+    <section title="Auto-provisioning of DDoS countermeasures">
+<t>
+	The largely manual tasks associated with provisioning effective, 
+	situationally-appropriate DDoS countermeasures is a significant 
+	barrier to providing/obtaining DDoS mitigation services for both 
+	mitigation providers and mitigation recipients.  Due to the 'self- 
+	descriptive' nature of DOTS registration messages and mitigation 
+	requests, the implementation and deployment of DOTS has the 
+	potential to automate countermeasure selection and configuration 
+	for DDoS mitigators.  The details of such provisioning are beyond 
+	the scope of this document.
+</t>
+<t>
+	This can theoretically be an inter- or intra-domain use-case, but 
+	is more typically an inter-domain scenario.
+</t>
+
+    </section>
+
+	<section title="Informational DDoS attack notification to 
+	interested and authorized third parties">
+<t>
+	In addition to its primary role of providing a standardized, 
+	programmatic approach to the automated and/or operator-assisted 
+	request of DDoS mitigation services and providing status updates of 
+	those mitigations to requesters, DOTS may be utilized to notify 
+	security researchers, law enforcement agencies, regulatory bodies, 
+	etc. of DDoS attacks against attack targets, assuming that 
+	organizations making use of DOTS choose to share such third-party 
+	notifications, in keeping with all applicable laws, regulations, 
+	privacy and confidentiality considerations, and contractual 
+	agreements between DOTS users and said third parties.
+</t>
+<t>
+	This is an inter-domain scenario.
+</t>
+
+	</section>
+
+    </section>
+    
+</section>
+
+<section title="Security Considerations">
+<t>
+	DOTS is at risk from three primary attacks: DOTS agent 
+	impersonation, traffic injection, and signaling blocking.  The DOTS 
+	protocol MUST be designed for minimal data transfer to address the 
+	blocking risk.
+</t>
+<t>
+	Impersonation and traffic injection mitigation can be managed 
+	through current secure communications best practices.  DOTS is not 
+	subject to anything new in this area.  One consideration could be 
+	to minimize the security technologies in use at any one time.  The 
+	more needed, the greater the risk of failures coming from 
+	assumptions on one technology providing protection that it does not 
+	in the presence of another technology.
+</t>
+<t>
+	Additional details of DOTS security requirements may be found in 
+	<xref target="I-D.ietf-dots-requirements" />.
+</t>
+</section>
+
+<section title="IANA Considerations">
+<t>
+	No IANA considerations exist for this document at this time.
+</t>
+</section>
+
+<section title="Acknowledgments">
+<t>
+	TBD
+</t>
+</section>
+
+</middle>
+  <back>
+    <references title="Normative References">
+	<?rfc include="reference.RFC.2119.xml"?>
+    </references>
+
+    <references title="Informative References">
+
+	<?rfc include="reference.I-D.ietf-dots-requirements.xml"?>
+	<?rfc include="reference.RFC.6335.xml"?>
+
+   <reference anchor="APACHE" target="https://www.modsecurity.org">
+        <front>
+        <title>Apache mod_security</title>
+        <author>
+        <organization></organization>
+        </author>
+        <date/>
+        </front>
+    </reference>
+
+   <reference anchor="RRL" target="https://deepthought.isc.org/article/AA-00994/0/Using-the-Response-Rate-Limiting-Feature-in-BIND-9.10.html">
+        <front>
+        <title>BIND RRL</title>
+        <author>
+        <organization></organization>
+        </author>
+        <date/>
+        </front>
+    </reference>
+
+    </references>
+
+  </back>
+</rfc>

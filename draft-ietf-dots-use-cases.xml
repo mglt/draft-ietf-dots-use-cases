@@ -12,7 +12,7 @@
   <?rfc strict="no" ?>
 
 
-<rfc category="info" ipr="trust200902" docName="draft-ietf-dots-use-cases-01.txt">
+<rfc category="info" ipr="trust200902" docName="draft-ietf-dots-use-cases-02.txt">
 
 <front>
 <title abbrev="DOTS Use cases">Use cases for DDoS Open Threat Signaling</title>
@@ -159,6 +159,62 @@ More specifically, DOTS does not intend to become a generic purpose used to orch
 	</section> 
 </section>
 
+<section title="Use Cases Scenarios">
+<t>This section provides a high level description of scenarios addressed by DOTS. These scenarios are described in more details in <xref target="annex-uc"/>. In both sections, the scenarios are provided in order to illustrate the purpose of DOTS. They are not limitative and other use cases are expected to appear during the deployment of DOTS.</t>
+
+<t>All scenarios presents a coordination between the DDoS target, the DDoS attack telemetry and the mitigator. The coordination and communication between these entity depends, for example on the characteristic or functionality of the equipment, the reliability of the information provided by DDoS attack telemetry, the business relationship between the DDoS target domain and the mitigator.</t>
+
+<t>More explicitly, in some cases, the DDoS telemetry attack may simply activate a DDoS mitigation, whereas in some case, it may collaborate by providing some information. In some cases, the DDoS mitigation may be orchestrated, which includes selecting an specific appliance as well as starting/ending a mitigation.</t>  
+
+     
+<section title="CPE Intra-domain DDoS Mitigation">
+
+<t>The most elementary scenario considers a equipment such as a CPE that when overloaded sends an alert to specific equipment located upstream. In most cases, these very basic equipment are unlikely to diagnose whether an DDoS attack is ongoing or not and detection as well as potential mitigation is left to the upstream equipment.</t>
+
+<t>In most deployment, the upstream equipment belong to the same domain as the CPE. In such case, it is not expected that a specific contract is established between the CPE and the DDoS mitigation service. The CPE and concerned traffic is likely to be identified by the source of the alert, which also imply the mitigator is aware of the nature of the equipment as well as the architecture of the domain.</t>
+ 
+<t>The DDoS mitigation service may be for example an equipment that is located on path or a controller that will configure the network to the traffic to be analyzed and mitigated is redirected to a dedicated vendor specific equipment or solution. The DDoS mitigation service may be activated only for the traffic associated to the CPE sending the alert or instead to the traffic associated to all CPE. Such decision are not part of DOTS, but instead depends on the policies of the network administrator.</t>
+
+<t>The DDoS mitigation service is expected to acknowledge the reception of the alert in order to avoid retransmission. This may become an issue for example if an ISP receives alerts from all CPEs multiple time. However, it is unlikely that in such cases the CPE will follow the status of the mitigation. Instead, as the DDoS mitigation service and the CPE belongs to the same administrative domain, it is expected that the decision of mitigating or not, as well as the decision to end an ongoing mitigation will be left to DDoS mitigation service without notice to the CPEs.</t>  
+    
+</section>
+
+<section title="Service/System Intra-domain DDoS Mitigation">
+
+<t>This section considers that some more specialized equipment are sending the DDoS alert. As opposed to the CPE, these equipment are likely to provide reliable information about the ongoing attack. Such equipment could typically be a telemetry system, or a specific target service such as a specific instance of web server, or a specific web application detecting application specific attacks.</t>
+
+<t>Such information is likely to be carried in the alert and taken into account by the DDoS mitigation service to proceed to further action.
+Typically a telemetry system may indicate selectors of the suspicious traffic as well indicators or qualification of the detected attack. As the telemetry system is expected to monitor multiple aspect of the traffic. Similarly when an attack is detected by the target service. The destination of the alert is likely to receive alert from multiple different services (DNS, HTTP, TCP, UDP, application layer specific...). Such information is likely to be trusted and considered by the mitigator to apply the appropriated security appliance.</t>
+
+
+<t>Note that within a single domain it likely that the service or the telemetry system are most accurate equipment to qualify the attack. As a result, not providing the information is likely to re-do the analysis phase. Providing the information while sending the alert avoid re-processing the analysis. Instead the mitigator uses directly the information to redirect the traffic to the appropriated specialized appliance.</t>
+
+
+<t>For the same reasons as the CPE, as mitigation of the DDoS Service is performed in a single administrative domain, the source of the alert may not manage the end of the mitigation service and leave such decision to the administrator of domain or the DDoS mitigation service.</t>
+   
+</section>
+
+<section title="Orchestrating Intra-domain DDoS Mitigation">
+
+<t>This section presents a generalization of the Service/System intra-domain scenario. 
+Orchestration goes one step further and considers that the information carried by the alert could have some management purpose. This includes explicitly starting / ending a mitigation as well as selecting a specific DDoS mitigation service. This differs from the previous case in that the source of the alert does not leave anymore the decision on how to mitigate the attack by the mitigator. Instead the mitigator is orchestrated.</t>
+
+
+<t>Typical example of orchestrators could be a network administrator that monitors the traffic and initiates manually a DDoS mitigation from its web portal. Orchestration may also applied automatically by an orchestrator.</t> 
+
+</section>
+
+<section title="Inter-domain DDoS Mitigation">
+
+<t>In the case of inter-domain mitigation, it is expected that the DDoS mitigation service has more resource, know-how than the target domain. As a result, there is little benefit of sharing the information collected in the target domain. In addition, the relation between the two domains are also expected to be described into a pre-agreed contract. In that sense, the alert can be restraint to an activation of the DDoS mitigation service.</t>
+
+<t>On the other hand, has there is a contract agreement, it is also expected that target domain is able to stop the DDoS mitigation service itself, and that the end of the mitigation is not unilaterally provided to the DDoS mitigation service.</t>
+ 
+
+
+</section>
+</section>
+
 <section title="Use Cases Taxonomy">
 
 <t>The purpose of DDoS Open Threat Signaling DOTS is to enable the coordination of multiple vendor DDoS mitigation services/systems. DOTS communication is a communication between a DOTS Client and a DOTS Server.
@@ -166,7 +222,6 @@ A DOTS Client or DOTS Server can be hosted on different nodes which are associat
 
 <t>The high level classification is then illustrated on concrete nodes and examples. Appendix also illustrate the current classification with scenario and complete description of the process.</t>
 
-<t>[MGLT: I voluntary talk about nodes to avoid the terminology components. In my opinion we should remove from the terminology the DOTS relay, DOTS agent. For clarity I think we should only have DOTS Client and DOTS Server.]</t>
 
 <section title="DOTS Client Taxonomy">
 
@@ -185,7 +240,7 @@ A DOTS Client or DOTS Server can be hosted on different nodes which are associat
     <t>DOTS Client coordinating an DDoS attack mitigation
     <list style="format %i) "> 
        <t>hosted on an orchestrator</t>
-        <t>hosted on administrative GUI</t>
+       <t>hosted on administrative GUI</t>
     </list>
     </t>
 </list>
@@ -194,7 +249,7 @@ A DOTS Client or DOTS Server can be hosted on different nodes which are associat
 <t>When the DOTS Client is hosted on the attack target. The DOTS Client mostly raised an alert to the DDoS Mitigation service/system. When a alert is raised by the node under attack, very little information is expected to be provided by DOTS Client to the DDoS mitigation service/system. More particularly telemetric information or characteristics of the attack are likely to be unreliable as the host is already overload. As a result, such DOTS Client may raise an alert without any additional information. Eventually, information such as the asset under attack which can simply be configured. The asset under attack is especially useful for the DDoS mitigation service/system to indicate the origin of the alert. It is not necessary, for example, if the origin of the alert is implicit. The origin of the alert my be implicit, for example when DOTS Clients are authenticated or when the device is identified by the links (i.e when the host is a CPE). Note also that the asset to protect is only informational and optional. This information may be spoofed, and the DDoS mitigation is likely to be derived from the authentication of the alert. In most cases, the DDoS mitigation has been pre-agreed between the host under attack and the DDoS mitigation service/system.</t>
 
 
-<t>When the DOTS Client is hosted on a monitoring system, the monitoring system may raise an alert an attack is ongoing. Unlike the host under attack, the monitoring system is expected to have sufficient resource so it is not itsefl overload and impacted by the ongoing attack. As a result, the DOTS Client is more likely to provide additional information associated to the alert, as tis information is expected to be reliable. The type of information associated may be associated to the asset to protect and eventually some information qualifying the attack. On the other hand, the information associated also depends on how the what has been agreed with DDoS mitigation service/system. In most cases, when a DDoS attack is detected all the traffic is redirected to the DDoS mitigation procedure has been agreed between the DDoS mitigation service/system and the entity hosting the monitoring service. In such cases, very few information is needed.</t>
+<t>When the DOTS Client is hosted on a monitoring system, the monitoring system may raise an alert an attack is ongoing. Unlike the host under attack, the monitoring system is expected to have sufficient resource so it is not itself overload and impacted by the ongoing attack. As a result, the DOTS Client is more likely to provide additional information associated to the alert, as this information is expected to be reliable. The type of information associated may be associated to the asset to protect and eventually some information qualifying the attack. On the other hand, the information associated also depends on how the what has been agreed with DDoS mitigation service/system. In most cases, when a DDoS attack is detected all the traffic is redirected to the DDoS mitigation procedure has been agreed between the DDoS mitigation service/system and the entity hosting the monitoring service. In such cases, very few information is needed.</t>
 
 <t>When the DOTS Client is hosted on an orchestrator, the DOTS Client contacts the DDoS mitigation service/system to initiates a DDoS mitigation. The orchestrator is responsible for setting the network to redirect the traffic to the DDoS mitigation service/system. If the DDoS mitigation service/system is not available, the orchestrator is responsible to find an alternative. Again the orchestrator is likely to provide additional information to the DDoS mitigation service/system. For example, typical information may be the asset to protect, as well as the specific mitigation function requested. On the other hand, the service is usually expected to be associated to the mitigation service, and so may not be explicitly specified. In addition, the DOTS Client is also expected to control how the DDoS mitigation is performed. More specifically, it is expected that the DOTS Client can terminate the DDoS mitigation. In addition, the DOTS Client should have sufficient information to decide how to operate next. For example, it should be able to check if the mitigation is ongoing as well as the efficiency of the mitigation.</t>
 
@@ -308,7 +363,7 @@ A DOTS Client or DOTS Server can be hosted on different nodes which are associat
     </reference>
 
     </references>
-<section title="Use Cases">
+<section title="Use Cases" anchor="annex-uc">
 <t>
 	This section provides a high-level overview of likely use cases and 
 	deployment scenarios for DOTS-enabled DDoS mitigation services.  It 

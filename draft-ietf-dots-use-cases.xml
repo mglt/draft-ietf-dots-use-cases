@@ -1,7 +1,236 @@
-<section title="Inter-domain Use Cases" anchor="sec-upsteam">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+]>
 
-<section title="Enterprise with an upsteam transit provider
-		DDoS mitigation Service">
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+ <?rfc toc="yes" ?>
+ <?rfc symrefs="yes" ?>
+ <?rfc sortrefs="yes"?> 
+ <?rfc compact="yes" ?>
+ <?rfc subcompact="no" ?>  
+ <?rfc iprnotified="no" ?>
+  <?rfc strict="no" ?>
+
+
+<rfc category="info" ipr="trust200902" docName="draft-ietf-dots-use-cases-04.txt">
+
+<front>
+<title abbrev="DOTS Use cases">Use cases for DDoS Open Threat Signaling</title>
+
+     <author fullname="Roland Dobbins" initials="R." surname="Dobbins" role="editor">
+     <organization>Arbor Networks</organization>
+     <address>
+     <postal>
+     <street>30 Raffles Place</street>
+	 <street>Level 17 Chevron House</street>
+     <city>Singapore 048622</city>
+     <country>Singapore</country>
+     </postal>
+     <email>rdobbins@arbor.net</email>
+     </address>
+     </author>
+ 
+    <author fullname="Stefan Fouant" initials="S." surname="Fouant">
+      <organization> </organization>
+      <address>
+        <email> stefan.fouant@copperriverit.com </email>
+      </address>
+    </author>
+
+    <author fullname="Daniel Migault" initials="D." surname="Migault">
+      <organization> Ericsson </organization>
+      <address>
+        <postal>
+          <street> 8400 boulevard Decarie</street>
+          <city> Montreal</city>
+           <region>QC</region>
+         <code> H4P 2N2 </code>
+          <country>Canada</country>
+        </postal>
+        <phone> +1 514-452-2160 </phone>
+        <email> daniel.migault@ericsson.com </email>
+      </address>
+    </author>
+
+    <author fullname="Robert Moskowitz" initials="R." surname="Moskowitz">
+      <organization>HTT Consulting
+      </organization>
+      <address>
+        <postal>
+        <street></street>
+        <city>Oak Park</city>
+        <region>MI</region>
+		<code>48237</code>
+        <country>USA</country>
+        </postal>
+        <email>rgm@labs.htt-consult.com</email>
+      </address>
+    </author>
+
+	<author fullname="Nik Teague" initials="N." surname="Teague">
+	  <organization>Verisign Inc</organization>
+	  <address>
+	  <postal>
+	  <street>12061 Bluemont Way</street>
+	  <city>Reston</city>
+      <region>VA</region>
+      <code>20190</code>
+	  <country>USA</country>
+	  </postal>
+	  <phone>+44 791 763 5384</phone>
+	  <email>nteague@verisign.com</email>
+	</address>
+	</author>
+
+     <author fullname="Liang Xia" initials="L." surname="Xia">
+        <organization>Huawei</organization>
+        <address>
+        <postal>
+        <street>No. 101, Software Avenue, Yuhuatai District</street>
+        <city>Nanjing</city>
+        <country>China</country>
+        </postal>
+        <phone></phone>
+        <email>Frank.xialiang@huawei.com</email>
+        </address>
+        </author>
+
+     <author fullname="Kaname Nishizuka" initials="K." surname="Nishizuka">
+        <organization>NTT Communications</organization>
+        <address>
+        <postal>
+        <street>GranPark 16F 3-4-1 Shibaura, Minato-ku</street>
+        <city>Tokyo 108-8118</city>
+        <country>Japan</country>
+        </postal>
+        <phone></phone>
+        <email>kaname@nttv6.jp</email>
+        </address>
+        </author>
+
+<date/>
+   <area>Security Area</area>
+    <workgroup> DOTS WG</workgroup>
+    <keyword>RFC</keyword>
+     <keyword>Request for Comments</keyword>
+     <keyword>I-D</keyword>
+     <keyword>Internet-Draft</keyword>
+
+ <abstract>
+
+<t> The DDoS Open Threat Signaling (DOTS) effort is intended to provide
+a protocol that facilitates interoperability between multivendor
+solutions/services.  This document presents use cases to evaluate the
+interactions expected between the DOTS components as well as the DOTS
+exchanges.  The purpose of the use cases is to identify the interacting
+DOTS component, how they collaborate and what are the types of
+information to be exchanged.  </t> 
+
+</abstract>
+
+</front>
+  <middle>
+
+<section title="Introduction" anchor="intro"> 
+
+<t>Currently, distributed denial-of-service (DDoS) attack mitigation
+solutions/services are largely based upon siloed, proprietary
+communications paradigms which result in vendor/service lock-in.  As a
+side-effect, this makes the configuration, provisioning, operation, and
+activation of these solutions a highly manual and often time- consuming
+process.  Additionally, coordination of multiple DDoS mitigation
+solutions/services simultaneously engaged in defending the same
+organization against DDoS attacks is fraught with both technical and
+process-related hurdles.  This greatly increase operational complexity
+and often results in suboptimal DDoS attack mitigation efficacy.</t>
+
+<t>The DDoS Open Threat Signaling (DOTS) effort is intended to provide a
+protocol that facilitates interoperability between multivendor DDoS
+mitigation solutions/services.  As DDoS solutions/services are broadly
+heterogeneous among different vendors, the primary goal for DOTS is to
+provide a high level interaction with these DDoS solutions/services such
+as initiating or terminating DDoS mitigation assistance.</t>
+
+<t>It should be noted that DOTS is not in and of itself intended to
+perform orchestration functions duplicative of the functionality being
+developed by the [I2NSF] WG; rather, DOTS is intended to allow devices,
+services, and applications to request DDoS attack mitigation assistance
+and receive mitigation status updates from systems of this nature.</t>
+
+<t>The use cases presented in the document are intended to provide
+examples of communications interactions DOTS-enabled nodes in both
+inter- and intra-organizational DDoS mitigation scenarios.  These use
+cases are expected to provide inputs for the design of the DOTS
+protocol(s).</t>
+
+</section>
+
+<section anchor="terms" title="Terminology and Acronyms">
+	<section title="Requirements Terminology">
+
+<t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+document are to be interpreted as described in <xref
+target="RFC2119">RFC 2119</xref>.</t> 
+
+	</section> 
+
+	<section title="Acronyms">
+
+<t>This document makes use of the same terminology and definitions as
+<xref target="I-D.ietf-dots-requirements" />, except where noted.</t>
+
+	</section>
+
+        <section title="Terms">
+
+<t>Inter-organizational: a DOTS communications relationship between
+distinct organizations with separate spans of administrative control.
+Typical inter-organizational DOTS communication relationships would be
+between a DDoS mitigation service provider and an end-customer
+organizational which requires DDoS mitigation assistance; between
+multiple DDoS mitigation service providers coordinating mutual defense
+of a mutual end-customer; or between DDoS mitigation service providers
+which are requesting additional DDoS mitigation assistance in for
+attacks which exceed their inherent DDoS mitigation capacities and/or
+capabilities.</t>
+
+<t>Intra-organizational: a DOTS communications relationship between
+various elements within a single span of administrative control.  A
+typical intra-organizational DOTS communications relationship would be
+between DOTS clients, DOTS gateways, and DOTS servers within the same
+organization.</t>
+
+        </section>
+ 
+</section>
+
+<section title="Use Cases Scenarios">
+
+<t>This section provides a high-level description of scenarios addressed
+by DOTS.  In both sections, the scenarios are provided in order to
+illustrate the use of DOTS in typical DDoS attack scenarios.  They are
+not definitive, and other use cases are expected to emerge with
+widespread DOTS deployment.</t>
+
+<t>All scenarios present a coordination between the targeted
+organization, the DDoS attack telemetry and the mitigator.  The
+coordination and communication between these entity depends, for example
+on the characteristic or functionality of the equipment, the reliability
+of the information provided by DDoS attack telemetry, and the business
+relationship between the DDoS target domain and the mitigator.</t>
+
+<t>More explicitly, in some cases, the DDoS telemetry attack may simply
+activate a DDoS mitigation, whereas in other cases, it may collaborate
+by providing some information about an attack.  In some cases, the DDoS
+mitigation may be orchestrated, which includes selecting a specific
+appliance as well as starting/ending a mitigation.</t>
+     
+
+<section title="Inter-domain Use Cases" anchor="sec-upstream">
+
+<section title="Enterprise with an upsteam transit provider DDoS
+mitigation Service">
 
 <!-- environment -->
 
@@ -56,7 +285,7 @@ service to the enterprise IDMS DOTS client.</t>
 </section>
 
 <section title="Enterprise with on Cloud DDoS mitigation provider"
-	 anchor="sec-cloud">
+anchor="sec-cloud">
 
 <!-- environment -->
 <t>This use case details an enterprise that has a local DDoS detection
@@ -302,3 +531,76 @@ network administrator the DDoS mitigation is finished.</t>
 </section>
 
 </section>
+
+</section>
+
+<section title="Security Considerations">
+
+<t> DOTS is at risk from three primary attacks: DOTS agent
+impersonation, traffic injection, and signaling blocking. The DOTS
+protocol MUST be designed for minimal data transfer to address the
+blocking risk. </t> 
+
+<t> Impersonation and traffic injection mitigation can be managed
+through current secure communications best practices. DOTS is not
+subject to anything new in this area. One consideration could be to
+minimize the security technologies in use at any one time. The more
+needed, the greater the risk of failures coming from assumptions on one
+technology providing protection that it does not in the presence of
+another technology.  </t> 
+
+<t> Additional details of DOTS security requirements may be found in
+<xref target="I-D.ietf-dots-requirements" />.  </t>
+
+ </section>
+
+<section title="IANA Considerations">
+
+<t>No IANA considerations exist for this document at this time.  </t>
+
+</section>
+
+<section title="Acknowledgments">
+<t>
+	TBD
+</t>
+</section>
+
+</middle>
+  <back>
+
+
+    <references title="Normative References">
+	<?rfc include="reference.RFC.2119.xml"?>
+    </references>
+
+    <references title="Informative References">
+
+	<?rfc include="reference.I-D.ietf-dots-requirements.xml"?>
+	<?rfc include="reference.RFC.6335.xml"?>
+        <?rfc include="reference.RFC.7368.xml"?>
+
+   <reference anchor="APACHE" target="https://www.modsecurity.org">
+        <front>
+        <title>Apache mod_security</title>
+        <author>
+        <organization></organization>
+        </author>
+        <date/>
+        </front>
+    </reference>
+
+   <reference anchor="RRL" target="https://deepthought.isc.org/article/AA-00994/0/Using-the-Response-Rate-Limiting-Feature-in-BIND-9.10.html">
+        <front>
+        <title>BIND RRL</title>
+        <author>
+        <organization></organization>
+        </author>
+        <date/>
+        </front>
+    </reference>
+
+    </references>
+  </back>
+</rfc>
+

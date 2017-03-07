@@ -220,7 +220,7 @@ on the characteristic or functionality of the equipment, the reliability
 of the information provided by DDoS attack telemetry, and the business
 relationship between the DDoS target domain and the mitigator.</t>
 
-<t>More explicitly, in some cases, the DDoS telemetry attack may simply
+<t>More explicitly, in some cases, the DDoS attack telemetry may simply
 activate a DDoS mitigation, whereas in other cases, it may collaborate
 by providing some information about an attack.  In some cases, the DDoS
 mitigation may be orchestrated, which includes selecting a specific
@@ -313,10 +313,10 @@ client and the cloud provider a DOTS server.</t>
  
 <!-- attack - mitigation description --> 
 
-<t>When an attack is detected an automated or manual response will
-generate the DOTS mitigation request which will be sent to the cloud
+<t>When an attack is detected an automated or manual DOTS mitigation request
+will be generatd and sent to the cloud
 provider.  The cloud provider will assess the request for validity and
-if the request passes a mitigation action may then be initiated.  This
+if passed a mitigation action may then be initiated.  This
 action will usually involve the offramp of all traffic destined to the
 target for further scrutiny and filtering by the cloud provider.  This
 should not only result in an alleviation of pressure on the enterprise
@@ -360,7 +360,7 @@ not be noticed by the upstream ISP.</t>
 
 <t>This scenario is considered as an intra-domain as ISPs have a
 specific relationship with these customers. The ISP is the connectivity
-provider, and in some cases, the even  provides the CPE with a set of
+provider, and in some cases, they even  provides the CPE with a set of
 associated services. Moreover, in case of any connectivity issue the
 customer is likely to call the hotline. In order to improve the QoS of
 the connectivity as well as to automate the request for DDoS mitigation,
@@ -372,8 +372,8 @@ where a contract is negotiated with a third party, such as in the
 inter-domain use cases.</t>  
       
 <t>In most cases, CPEs are unlikely to diagnose whether an DDoS attack
-is ongoing or not and detection as well as potential mitigation is left
-to the upstream equipment.</t>
+is ongoing or not and simply rely on the upstream equipment provided by the ISP 
+for detection and potential mitigation.</t>
    
 <t>The DDoS Mitigation service of the ISP may be hard coded or may be
 configured by the customer manually or automatically while the CPE is

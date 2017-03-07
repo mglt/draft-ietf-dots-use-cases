@@ -388,11 +388,13 @@ implements a DOTS client while the ISP implements a DOTS server. </t>
 
 <!-- attack - mitigation description --> 
    
-<t> The CPE monitors jobs and upon some heuristics the DOTS Client on
-the CPE sends a DOTS mitigation request to the ISP DOTS Server.
-Typically, a default configuration with no additional information
-associated to the DOTS mitigation request is expected. The ISP derives
-traffic to mitigate from the CPE IP address. </t>
+<t> The DOTS Client on the CPE monitors the status of CPE's resource 
+and link bandwidth usage. If something unusual happens based on preconfigured 
+throughput or some heuristics methods, the DOTS Client sends a DOTS mitigation 
+request to the ISP DOTS Server. Typically, a default configuration with no additional 
+information associated to the DOTS mitigation request is expected. The ISP 
+derives traffic to mitigate from the CPE IP address.
+ </t>
 
 <t>In some cases, the DOTS mitigation request contains options such as
 some IP addresses or prefixes that belongs to a whitelist or
@@ -414,7 +416,7 @@ reception and confirms DDoS mitigation starts or not. Such feed back is
 mostly to avoid retransmission of the request.</t>
 
 <t>Note that the ISP is connected to multiple CPEs and as such the CPE
-can potentially DDoS the DOTS server. ISP may use relays to absorbs the
+can potentially perform DDoS attack to the DOTS server. ISP may use relays to absorbs the
 traffic. In addition, such attack may be triggered by a large scale DDoS
 attack, which is expected to be detected and mitigated by the upstream
 architecture.</t> 
